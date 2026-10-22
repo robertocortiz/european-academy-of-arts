@@ -27,7 +27,7 @@ The EAA sign-in screen uses these public, fictional accounts:
 
 | Role | Name | Username | Password |
 | --- | --- | --- | --- |
-| Admin | Alex Morgan | admin | Admin123! |
+| Admin | Edvinas Minkstimas | admin | Admin123! |
 | Student | Sophie Williams | student | Student123! |
 | Teacher | Isabella Rossi | teacher | Teacher123! |
 
