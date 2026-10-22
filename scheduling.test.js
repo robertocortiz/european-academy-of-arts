@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{lessonOnDate}from'./scheduling.js';
+const occurs=(lesson,date)=>lessonOnDate(lesson,new Date(date+'T12:00:00'));
+test('legacy schedules remain weekly',()=>{assert.equal(occurs({day:0},'2026-10-19'),true);assert.equal(occurs({day:0},'2026-10-20'),false)});
+for(const type of ['once','makeup'])test(`${type} occurs only on its date`,()=>{const l={scheduleType:type,startDate:'2026-10-22'};assert.equal(occurs(l,'2026-10-22'),true);assert.equal(occurs(l,'2026-10-15'),false);assert.equal(occurs(l,'2026-10-29'),false)});
+test('weekly respects inclusive date range',()=>{const l={scheduleType:'recurring',frequency:'weekly',startDate:'2026-10-22',endDate:'2026-11-05'};for(const d of ['2026-10-22','2026-10-29','2026-11-05'])assert.equal(occurs(l,d),true);for(const d of ['2026-10-15','2026-10-23','2026-11-12'])assert.equal(occurs(l,d),false)});
+test('biweekly skips alternating weeks',()=>{const l={scheduleType:'recurring',frequency:'biweekly',startDate:'2026-10-22'};assert.equal(occurs(l,'2026-10-29'),false);assert.equal(occurs(l,'2026-11-05'),true);assert.equal(occurs(l,'2026-11-19'),true)});
+test('monthly skips nonexistent dates and resumes',()=>{const l={scheduleType:'recurring',frequency:'monthly',startDate:'2026-01-31'};assert.equal(occurs(l,'2026-02-28'),false);assert.equal(occurs(l,'2026-03-31'),true);assert.equal(occurs(l,'2026-03-30'),false);assert.equal(occurs(l,'2025-12-31'),false)});
+test('weekly recurrence survives daylight saving transitions',()=>{const l={scheduleType:'recurring',frequency:'weekly',startDate:'2026-10-25'};assert.equal(occurs(l,'2026-11-01'),true);assert.equal(occurs(l,'2026-11-08'),true)});
