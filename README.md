@@ -40,3 +40,7 @@ Admin Settings → Recently deleted stores new deletions of instruments, student
 ## Lesson frequency
 
 Admin and teacher scheduling supports One-time, Recurring, and Makeup. Every new schedule has a start/lesson date. Recurring schedules support weekly, every two weeks, or monthly on the same calendar date, with an optional inclusive end date. Monthly recurrence skips months without that day. Makeup is one additional dated lesson and does not cancel the original. Existing undated demo lessons retain their legacy weekly behavior. All calendars, attendance date matching, and monthly lesson counts use the same recurrence rules. Teacher week views include weekends. Schedule-change approval moves a dated lesson or series start, rather than modeling individual exceptions. Run `node --test scheduling.test.js` for recurrence tests (also checked under America/New_York across DST).
+
+## Browser navigation
+
+Portal sections now use the browser History API with hash URLs, so browser Back/Forward (including browser-supported trackpad gestures) and the in-app Back button share one history. Reloading the same tab restores its current section and member/message context from history.state for the signed-in demo account. Navigation entries from a different account fall back to Overview. This does not turn the demo login into secure authentication. Filters, calendar view selection, and scroll positions are not fully restored across section changes.
