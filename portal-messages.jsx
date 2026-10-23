@@ -1,4 +1,4 @@
-import SwipeConversation from './swipe-conversation.jsx';
+import ConversationActions from './conversation-actions.jsx';
 import React,{useState,useEffect,useRef} from 'react';
 import{Send,Plus,Search,X,SquarePen,Archive,Trash2,RotateCcw,Inbox}from'lucide-react';
 import{conversationKey,messagePreview}from'./message-management.js';
@@ -17,7 +17,7 @@ function choose(from,to){OpenRow(null);Select({from,to});ShowPicker(false);D('')
 function start(){OpenRow(null);Q('');Select(null);D('');Folder('active');ShowPicker(true)}
 function folderChange(next){OpenRow(null);Folder(next);Select(null);ShowPicker(false);D('')}
 function changeConversation(next,target=selection){if(!admin||!target)return;const from=target.from,to=target.to,targetKey=conversationKey(from,to),label=next==='archived'?'Archive':next==='deleted'?'Delete':'Restore';if(!window.confirm(`${label} the conversation between ${who(from)} and ${who(to)}? ${next==='deleted'?'Its messages will be hidden from participants until restored.':next==='archived'?'It will move to Archived in your admin inbox. The participants can keep messaging.':'It will return to Active.'}`))return;onConversationChange(targetKey,{status:next,updatedAt:new Date().toISOString(),by:me});D('');OpenRow(null);Folder(next);Select(target);ShowPicker(false)}
-function conversationRow(from,to,content){const id=conversationKey(from,to);return admin?<SwipeConversation key={id} label={`${who(from)} and ${who(to)}`} status={conversationMeta[id]?.status||'active'} open={openRow===id} onOpen={()=>OpenRow(id)} onClose={()=>OpenRow(null)} onAction={next=>changeConversation(next,{from,to})}>{content}</SwipeConversation>:content}
+function conversationRow(from,to,content){const id=conversationKey(from,to);return admin?<ConversationActions key={id} label={`${who(from)} and ${who(to)}`} status={conversationMeta[id]?.status||'active'} open={openRow===id} onOpen={()=>OpenRow(id)} onClose={()=>OpenRow(null)} onAction={next=>changeConversation(next,{from,to})}>{content}</ConversationActions>:content}
 function changeMessage(m,restore=false){if(!admin)return;if(!window.confirm(`${restore?'Restore':'Remove'} this message from ${who(m.from)}? ${restore?'It will be visible in the conversation again.':'A “Message removed by admin” placeholder will remain. You can restore it from Deleted.'}`))return;onMessageChange(m.id,restore?{deletedAt:null,deletedBy:null}:{deletedAt:new Date().toISOString(),deletedBy:me})}
 function send(e){e.preventDefault();if(!draft.trim()||status==='deleted')return;if(admin&&status==='archived')Folder('active');onSend({id:Date.now(),from:me,to:b,text:draft.trim(),createdAt:new Date().toISOString(),time:new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})});D('')}
 const results=contacts.filter(p=>`${p.name} ${p.username||''} ${p.email||''} ${p.type}`.toLowerCase().includes(query.trim().toLowerCase()));
