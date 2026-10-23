@@ -48,3 +48,7 @@ Portal sections now use the browser History API with hash URLs, so browser Back/
 ## Message folders and moderation
 
 Admin Messages has Active, Archived, and Deleted folders. Archive organizes the admin inbox without preventing participants from replying; a new message reactivates the conversation. Conversation deletion is recoverable, hides content from participant views, and pauses replies until admin restores it. Individual message removal leaves a placeholder; original text is available to admins in Deleted for review/restoration. Both moderation actions require confirmation and persist timestamps/admin identity in browser storage. Deleted messages appear separately from deleted conversations in the Deleted folder. No permanent message purge is implemented. These are client-side demo controls, not secure access enforcement: all underlying data is still stored in this browser and needs backend permissions before real use. Message recovery is in Messages → Deleted rather than the Settings archive for members/instruments/lessons.
+
+## Simplified scheduling form
+
+Student and teacher pickers support dropdown browsing and search by name, username, or email, with keyboard selection. Teacher accounts can select only themselves as teacher. Lesson titles are generated from the chosen student instrument and their recorded level; unset levels are omitted. Students with multiple instruments get a lesson instrument selector. New schedules no longer request or store a room, while existing lessons retain any saved room details.
